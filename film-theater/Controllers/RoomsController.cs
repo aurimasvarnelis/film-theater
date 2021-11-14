@@ -57,7 +57,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult<RoomDto>> Post(int theaterId, CreateRoomDto roomDto)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
             var room = _mapper.Map<Room>(roomDto);
             room.TheaterId = theaterId;
@@ -72,7 +72,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult<RoomDto>> Put(int theaterId, int roomId, UpdateRoomDto roomDto)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
             var oldRoom = await _roomsRepository.Get(theaterId, roomId);
             if (oldRoom == null) return NotFound();
@@ -89,7 +89,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult> Delete(int theaterId, int roomId)
         {
             var room = await _roomsRepository.Get(theaterId, roomId);
-            if (room == null) return NotFound($"Room with id '{roomId}' not found.");
+            if (room == null) return NotFound();
 
             await _roomsRepository.Delete(room);
 

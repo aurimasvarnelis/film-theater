@@ -60,10 +60,10 @@ namespace film_theater.Controllers
         public async Task<ActionResult<SessionDto>> Post(int theaterId, int roomId, int sessionId, CreateSessionDto sessionDto)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
-            var room = await _roomsRepository.Get(roomId, sessionId);
-            if (room == null) return NotFound($"Room with id '{roomId}' not found.");
+            var room = await _roomsRepository.Get(theaterId, roomId);
+            if (room == null) return NotFound();
 
             var session = _mapper.Map<Session>(sessionDto);
             session.RoomId = roomId;
@@ -78,14 +78,13 @@ namespace film_theater.Controllers
         public async Task<ActionResult<SessionDto>> Put(int theaterId, int roomId, int sessionId, UpdateSessionDto sessionDto)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Couldn't find a theater with id of {theaterId}");
+            if (theater == null) return NotFound();
 
-            var room = await _roomsRepository.Get(roomId, sessionId);
-            if (room == null) return NotFound($"Room with id '{roomId}' not found.");
+            var room = await _roomsRepository.Get(theaterId, roomId);
+            if (room == null) return NotFound();
 
             var oldSession = await _sessionsRepository.Get(roomId, sessionId);
-            if (oldSession == null)
-                return NotFound();
+            if (oldSession == null) return NotFound();
 
             //oldRoom.Body = RoomDto.Body;
             _mapper.Map(sessionDto, oldSession);
@@ -97,11 +96,16 @@ namespace film_theater.Controllers
         }
 
         [HttpDelete("{sessionId}")]
-        public async Task<ActionResult> Delete(int roomId, int sessionId)
+        public async Task<ActionResult> Delete(int theaterId, int roomId, int sessionId)
         {
+            var theater = await _theatersRepository.Get(theaterId);
+            if (theater == null) return NotFound();
+
+            var room = await _roomsRepository.Get(theaterId, roomId);
+            if (room == null) return NotFound();
+
             var session = await _sessionsRepository.Get(roomId, sessionId);
-            if (session == null)
-                return NotFound();
+            if (session == null) return NotFound();
 
             await _sessionsRepository.Delete(session);
 

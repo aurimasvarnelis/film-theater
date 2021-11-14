@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>film_theater</RootNamespace>
+    <UserSecretsId>0f764b5e-bb7b-41ba-aba0-66fc25db275b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,11 +9,17 @@ namespace film_theater.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Session> Sessions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public FilmTheaterContext(DbContextOptions<FilmTheaterContext> options) : base(options)
         {
-            // !!! DON'T STORE THE REAL CONNECTION STRING THE IN PUBLIC REPO !!!
-            // Use secret managers provided by your chosen cloud provider
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FilmTheater");
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    // !!! DON'T STORE THE REAL CONNECTION STRING THE IN PUBLIC REPO !!!
+        //    // Use secret managers provided by your chosen cloud provider
+
+        //    //optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
+        //}
+
     }
 }

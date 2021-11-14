@@ -12,7 +12,6 @@ namespace film_theater.Data.Entities
         public string Authors { get; set; }
         public string Distributor { get; set; }
         public string AgeCensus { get; set; }
-        public DateTime RepertoireStart { get; set; }
         public string Description { get; set; }
         public DateTime CreationTimeUtc { get; set; }
     }

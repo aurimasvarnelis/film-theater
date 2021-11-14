@@ -3,29 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace film_theater.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Film",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Authors = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Distributor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AgeCensus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RepertoireStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Film", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Theaters",
                 columns: table => new
@@ -70,20 +51,14 @@ namespace film_theater.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FilmId = table.Column<int>(type: "int", nullable: true),
-                    TimeSpan = table.Column<TimeSpan>(type: "time", nullable: false),
+                    FilmName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sessions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sessions_Film_FilmId",
-                        column: x => x.FilmId,
-                        principalTable: "Film",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Sessions_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -98,11 +73,6 @@ namespace film_theater.Migrations
                 column: "TheaterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sessions_FilmId",
-                table: "Sessions",
-                column: "FilmId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Sessions_RoomId",
                 table: "Sessions",
                 column: "RoomId");
@@ -112,9 +82,6 @@ namespace film_theater.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Sessions");
-
-            migrationBuilder.DropTable(
-                name: "Film");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

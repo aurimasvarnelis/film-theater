@@ -42,7 +42,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult<TheaterDto>> Get(int theaterId)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
             // 200
             return Ok(_mapper.Map<TheaterDto>(theater));
@@ -63,7 +63,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult<TheaterDto>> Put(int theaterId, UpdateTheaterDto theaterDto)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
             _mapper.Map(theaterDto, theater);
 
@@ -77,7 +77,7 @@ namespace film_theater.Controllers
         public async Task<ActionResult<TheaterDto>> Delete(int theaterId)
         {
             var theater = await _theatersRepository.Get(theaterId);
-            if (theater == null) return NotFound($"Theater with id '{theaterId}' not found.");
+            if (theater == null) return NotFound();
 
             await _theatersRepository.Delete(theater);
 
