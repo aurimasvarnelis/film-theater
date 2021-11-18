@@ -1,8 +1,12 @@
 using AutoMapper;
+using film_theater.Auth.Model;
+using film_theater.Data.Dtos.Auth;
 using film_theater.Data.Dtos.Theaters;
 using film_theater.Data.Entities;
 using film_theater.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,16 +24,20 @@ namespace film_theater.Controllers
        /api/theaters/{theaterId} DELETE 200/204     
     */
     [ApiController]
+    [Authorize(Roles = UserRoles.Moderator)]
     [Route("api/theaters")]
     public class TheatersController : ControllerBase
     {
         private readonly ITheatersRepository _theatersRepository;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
-        public TheatersController(ITheatersRepository theatersRepository, IMapper mapper)
+        public TheatersController(ITheatersRepository theatersRepository,
+            IMapper mapper, IAuthorizationService authorizationService)
         {
             _theatersRepository = theatersRepository;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -53,6 +61,8 @@ namespace film_theater.Controllers
         {
             var theater = _mapper.Map<Theater>(theaterDto);
 
+            theater.UserId = User.FindFirst(CustomClaims.UserId).Value;
+
             await _theatersRepository.Post(theater);
 
             // 201
@@ -64,6 +74,10 @@ namespace film_theater.Controllers
         {
             var theater = await _theatersRepository.Get(theaterId);
             if (theater == null) return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, theater, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded)
+                return Forbid();
 
             _mapper.Map(theaterDto, theater);
 
@@ -78,6 +92,10 @@ namespace film_theater.Controllers
         {
             var theater = await _theatersRepository.Get(theaterId);
             if (theater == null) return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, theater, PolicyNames.SameUser);
+            if (!authorizationResult.Succeeded)
+                return Forbid();
 
             await _theatersRepository.Delete(theater);
 
