@@ -3,5 +3,5 @@ using System;
 
 namespace film_theater.Data.Dtos.Sessions
 {
-    public record CreateSessionDto(string FilmName, string StartTime);
+    public record CreateSessionDto(string FilmName, string StartTime, string EndTime);
 }

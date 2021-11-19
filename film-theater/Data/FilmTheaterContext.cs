@@ -18,13 +18,13 @@ namespace film_theater.Data
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
 
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FilmTheater");
+        //    optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=FilmTheater");
 
-            //optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
-        }
+        //    //optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MyDbConnection"));
+        //}
 
     }
 }

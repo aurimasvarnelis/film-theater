@@ -10,7 +10,7 @@ using film_theater.Data;
 namespace film_theater.Migrations
 {
     [DbContext(typeof(FilmTheaterContext))]
-    [Migration("20211118185418_initial")]
+    [Migration("20211119083658_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,7 +152,7 @@ namespace film_theater.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("film_theater.Auth.RefreshToken", b =>
+            modelBuilder.Entity("film_theater.Auth.Model.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,7 +394,7 @@ namespace film_theater.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("film_theater.Auth.RefreshToken", b =>
+            modelBuilder.Entity("film_theater.Auth.Model.RefreshToken", b =>
                 {
                     b.HasOne("film_theater.Data.Dtos.Auth.User", "User")
                         .WithMany()

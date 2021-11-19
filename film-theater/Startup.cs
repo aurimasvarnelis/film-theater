@@ -56,8 +56,8 @@ namespace film_theater
             });
             services.AddSingleton<IAuthorizationHandler, SameUserAuthorizationHandler>();
 
-            //services.AddDbContext<FilmTheaterContext>(options => options.UseSqlServer(_configuration.GetConnectionString("MyDbConnection")));
-            services.AddDbContext<FilmTheaterContext>();
+            services.AddDbContext<FilmTheaterContext>(options => options.UseSqlServer(_configuration.GetConnectionString("MyDbConnection")));
+            //services.AddDbContext<FilmTheaterContext>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddTransient<ITheatersRepository, TheatersRepository>();

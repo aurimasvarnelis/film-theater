@@ -150,7 +150,7 @@ namespace film_theater.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("film_theater.Auth.RefreshToken", b =>
+            modelBuilder.Entity("film_theater.Auth.Model.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -392,7 +392,7 @@ namespace film_theater.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("film_theater.Auth.RefreshToken", b =>
+            modelBuilder.Entity("film_theater.Auth.Model.RefreshToken", b =>
                 {
                     b.HasOne("film_theater.Data.Dtos.Auth.User", "User")
                         .WithMany()

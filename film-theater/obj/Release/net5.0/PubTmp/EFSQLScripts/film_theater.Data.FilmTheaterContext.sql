@@ -11,73 +11,7 @@ GO
 BEGIN TRANSACTION;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    CREATE TABLE [Theaters] (
-        [Id] int NOT NULL IDENTITY,
-        [Name] nvarchar(max) NULL,
-        [Location] nvarchar(max) NULL,
-        [CreationTimeUtc] datetime2 NOT NULL,
-        CONSTRAINT [PK_Theaters] PRIMARY KEY ([Id])
-    );
-END;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    CREATE TABLE [Rooms] (
-        [Id] int NOT NULL IDENTITY,
-        [Name] nvarchar(max) NULL,
-        [Capacity] int NOT NULL,
-        [RoomType] nvarchar(max) NULL,
-        [CreationTimeUtc] datetime2 NOT NULL,
-        [TheaterId] int NOT NULL,
-        CONSTRAINT [PK_Rooms] PRIMARY KEY ([Id]),
-        CONSTRAINT [FK_Rooms_Theaters_TheaterId] FOREIGN KEY ([TheaterId]) REFERENCES [Theaters] ([Id]) ON DELETE CASCADE
-    );
-END;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    CREATE TABLE [Sessions] (
-        [Id] int NOT NULL IDENTITY,
-        [FilmName] nvarchar(max) NULL,
-        [StartTime] nvarchar(max) NULL,
-        [CreationTimeUtc] datetime2 NOT NULL,
-        [RoomId] int NOT NULL,
-        CONSTRAINT [PK_Sessions] PRIMARY KEY ([Id]),
-        CONSTRAINT [FK_Sessions_Rooms_RoomId] FOREIGN KEY ([RoomId]) REFERENCES [Rooms] ([Id]) ON DELETE CASCADE
-    );
-END;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    CREATE INDEX [IX_Rooms_TheaterId] ON [Rooms] ([TheaterId]);
-END;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    CREATE INDEX [IX_Sessions_RoomId] ON [Sessions] ([RoomId]);
-END;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211003160600_init')
-BEGIN
-    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20211003160600_init', N'5.0.12');
-END;
-GO
-
-COMMIT;
-GO
-
-BEGIN TRANSACTION;
-GO
-
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetRoles] (
         [Id] nvarchar(450) NOT NULL,
@@ -89,7 +23,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetUsers] (
         [Id] nvarchar(450) NOT NULL,
@@ -113,7 +47,20 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE TABLE [Theaters] (
+        [Id] int NOT NULL IDENTITY,
+        [Name] nvarchar(max) NULL,
+        [Location] nvarchar(max) NULL,
+        [CreationTimeUtc] datetime2 NOT NULL,
+        [UserId] nvarchar(max) NULL,
+        CONSTRAINT [PK_Theaters] PRIMARY KEY ([Id])
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetRoleClaims] (
         [Id] int NOT NULL IDENTITY,
@@ -126,7 +73,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetUserClaims] (
         [Id] int NOT NULL IDENTITY,
@@ -139,7 +86,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetUserLogins] (
         [LoginProvider] nvarchar(450) NOT NULL,
@@ -152,7 +99,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetUserRoles] (
         [UserId] nvarchar(450) NOT NULL,
@@ -164,7 +111,7 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE TABLE [AspNetUserTokens] (
         [UserId] nvarchar(450) NOT NULL,
@@ -177,52 +124,119 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE TABLE [RefreshTokens] (
+        [Id] int NOT NULL IDENTITY,
+        [UserId] nvarchar(450) NULL,
+        [Token] nvarchar(max) NULL,
+        [JwtId] nvarchar(max) NULL,
+        [IsUsed] bit NOT NULL,
+        [IsRevoked] bit NOT NULL,
+        [AddedDate] datetime2 NOT NULL,
+        [ExpiryDate] datetime2 NOT NULL,
+        CONSTRAINT [PK_RefreshTokens] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_RefreshTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE NO ACTION
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE TABLE [Rooms] (
+        [Id] int NOT NULL IDENTITY,
+        [Name] nvarchar(max) NULL,
+        [Capacity] int NOT NULL,
+        [RoomType] nvarchar(max) NULL,
+        [CreationTimeUtc] datetime2 NOT NULL,
+        [TheaterId] int NOT NULL,
+        [UserId] nvarchar(max) NULL,
+        CONSTRAINT [PK_Rooms] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Rooms_Theaters_TheaterId] FOREIGN KEY ([TheaterId]) REFERENCES [Theaters] ([Id]) ON DELETE CASCADE
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE TABLE [Sessions] (
+        [Id] int NOT NULL IDENTITY,
+        [FilmName] nvarchar(max) NULL,
+        [StartTime] datetime2 NOT NULL,
+        [EndTime] datetime2 NOT NULL,
+        [CreationTimeUtc] datetime2 NOT NULL,
+        [RoomId] int NOT NULL,
+        [UserId] nvarchar(max) NULL,
+        CONSTRAINT [PK_Sessions] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_Sessions_Rooms_RoomId] FOREIGN KEY ([RoomId]) REFERENCES [Rooms] ([Id]) ON DELETE CASCADE
+    );
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE INDEX [IX_AspNetRoleClaims_RoleId] ON [AspNetRoleClaims] ([RoleId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     EXEC(N'CREATE UNIQUE INDEX [RoleNameIndex] ON [AspNetRoles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL');
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE INDEX [IX_AspNetUserClaims_UserId] ON [AspNetUserClaims] ([UserId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE INDEX [IX_AspNetUserLogins_UserId] ON [AspNetUserLogins] ([UserId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE INDEX [IX_AspNetUserRoles_RoleId] ON [AspNetUserRoles] ([RoleId]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     CREATE INDEX [EmailIndex] ON [AspNetUsers] ([NormalizedEmail]);
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     EXEC(N'CREATE UNIQUE INDEX [UserNameIndex] ON [AspNetUsers] ([NormalizedUserName]) WHERE [NormalizedUserName] IS NOT NULL');
 END;
 GO
 
-IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211116142639_add-identity')
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE INDEX [IX_RefreshTokens_UserId] ON [RefreshTokens] ([UserId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE INDEX [IX_Rooms_TheaterId] ON [Rooms] ([TheaterId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
+BEGIN
+    CREATE INDEX [IX_Sessions_RoomId] ON [Sessions] ([RoomId]);
+END;
+GO
+
+IF NOT EXISTS(SELECT * FROM [__EFMigrationsHistory] WHERE [MigrationId] = N'20211119083658_initial')
 BEGIN
     INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-    VALUES (N'20211116142639_add-identity', N'5.0.12');
+    VALUES (N'20211119083658_initial', N'5.0.12');
 END;
 GO
 
