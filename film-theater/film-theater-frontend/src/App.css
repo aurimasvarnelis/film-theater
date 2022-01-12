@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+
+* {
+  font-family: "Oswald", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+}
+.html {
+  background-color: rgb(237, 242, 244);
+}
+.footer-custom {
+  background-color: rgb(141, 153, 174);
+  color: white;
+  height: 100px;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 50px;
+}
+
+.navbar-custom{
+  background-color: rgb(141, 153, 174);
+  font-size: 1.6em;
+  font-weight: 600;
+}
+
+.navbar-custom a{
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: rgb(43, 45, 66) !important;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: rgb(217, 4, 41) !important;
+}
+
+.content-custom {
+  background-color: rgb(237, 242, 244);
+}
+
+div.topBotomBordersOut a:before, div.topBotomBordersOut a:after
+{
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  height: 2px;
+  background: rgb(217, 4, 41);
+  content: "";
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+div.topBotomBordersOut a:before
+{
+  top: 0px;
+  transform: translateY(10px);
+}
+
+div.topBotomBordersOut a:after
+{
+  bottom: 0px;
+  transform: translateY(-10px);
+}
+
+div.topBotomBordersOut a:hover:before, div.topBotomBordersOut a:hover:after
+{
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.theater-cover
+{
+  object-fit: cover;
+  height: 100vh;
+  width: 100%;
+
+}
+
+
+.alert-fixed {
+  position:fixed; 
+  top: 10%; 
+  left: 20%; 
+  width: 50%;
+  z-index:9999; 
+  border-radius:5px
+}
+
+.table-fit {
+  width: 1px;
+}

@@ -1,0 +1,135 @@
+import React from 'react'
+
+import Logo from '../images/logo.png'
+import { Navbar, Container, Nav } from 'react-bootstrap'
+import { useState } from 'react';
+import { Modal, Button, Form} from 'react-bootstrap';
+//import Login from './Login'
+import Register from './Register'
+import useToken from './useToken';
+import PropTypes from 'prop-types';
+
+
+async function loginUser(credentials) {
+    return fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+        .then(data => data.json())
+}
+
+
+
+const Header = ({loggedIn},{setToken}) => {
+    //const { token, setToken } = useToken();
+    const [show, setShow] = useState(false);
+  
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const [username, setUserName] = useState();
+    const [password, setPassword] = useState();
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const token = await loginUser({
+            username,
+            password
+        });
+        setToken(token);
+    }
+
+    if(loggedIn == true)
+    {
+        return (
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        <img
+                            src={Logo}
+                            width="80"
+                            height="80"
+                            alt="filmTheaterLogo"
+                        />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link href="#home">Home</Nav.Link>         
+                    </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        )
+    }
+    else{
+        return (
+            <Navbar bg="light" expand="lg">
+                <Container>
+                    <Navbar.Brand href="#home">
+                        <img
+                            src={Logo}
+                            width="80"
+                            height="80"
+                            alt="filmTheaterLogo"
+                        />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href="#link">Films</Nav.Link>             
+                    </Nav>
+                    <Nav>
+                        <Nav.Link>
+                            <Button variant="primary" onClick={handleShow}>
+                                Login
+                            </Button>
+                    
+                            <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Login</Modal.Title>
+                                </Modal.Header>
+                                <Form onSubmit={handleSubmit}>
+                                    <Modal.Body>
+                                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Label>Username</Form.Label>
+                                            <Form.Control type="text" placeholder="Enter username" onChange={e => setUserName(e.target.value)} />
+                                        </Form.Group>
+
+                                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                                            <Form.Label>Password</Form.Label>
+                                            <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                                        </Form.Group>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleClose}>
+                                        Close
+                                    </Button>
+                                    <Button variant="primary" type="submit" onClick={handleClose}>
+                                        Sign in
+                                    </Button>
+                                    </Modal.Footer>
+                                </Form>
+                            </Modal>
+                        </Nav.Link>
+                        <Nav.Link>
+                            <Register />
+                        </Nav.Link>             
+                    </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        )
+    }
+    
+}
+
+Header.propTypes = {
+    setToken: PropTypes.func.isRequired
+}
+
+export default Header

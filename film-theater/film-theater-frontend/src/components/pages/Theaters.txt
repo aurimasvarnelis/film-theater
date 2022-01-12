@@ -1,0 +1,24 @@
+import React from 'react'
+import axios from 'axios'
+
+const Theaters = () => {
+    state = {
+        theaters: []
+    }
+
+    componentDidMount() {
+        axios.get(`https://film-theater.azurewebsites.net/api/theaters`)
+          .then(res => {
+            const theaters = res.data;
+            this.setState({ theaters });
+        })
+    }
+
+    return (
+        <div>
+            
+        </div>
+    )
+}
+
+export default Theaters
