@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<sitemanifest>
-  <IisApp path="D:\Code\film-theater\film-theater\obj\Release\net5.0\PubTmp\Out\" />
-  <dbfullsql path="D:\Code\film-theater\film-theater\obj\Release\net5.0\PubTmp\EFSQLScripts\film_theater.Data.FilmTheaterContext.sql" />
-</sitemanifest>

@@ -1,2 +1,0 @@
-﻿
-Update-Database -Migration:0

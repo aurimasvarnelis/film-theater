@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="IIS Web Application Name" description="" value="film-theater" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^D:\\Code\\film-theater\\film-theater\\obj\\Release\\net5\.0\\PubTmp\\Out\\$" />
-  </parameter>
-  <parameter name="film_theater.Data.FilmTheaterContext" description="" value="Data Source=tcp:film-theater-dbserver.database.windows.net,1433;Initial Catalog=film-theater_db;User Id=raqua@film-theater-dbserver;Password=Testuoju123" tags="dbfullsql">
-    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^D:\\Code\\film-theater\\film-theater\\obj\\Release\\net5\.0\\PubTmp\\EFSQLScripts\\film_theater\.Data\.FilmTheaterContext\.sql$" />
-  </parameter>
-</parameters>
